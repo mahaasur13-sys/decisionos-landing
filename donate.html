@@ -1,16 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Support — ROMA Execution Bridge</title>
   <link rel="stylesheet" href="css/style.css"/>
+  <style>
+    body { background: #0a0a0f; color: #e8e8ed; font-family: system-ui, sans-serif; }
+    main { max-width: 520px; margin: 3rem auto; padding: 2rem; text-align: center; }
+    h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
+    .sub { opacity: 0.75; margin-bottom: 2rem; line-height: 1.5; }
+    .card {
+      background: #12121a; border: 1px solid #2a2a35; border-radius: 12px;
+      padding: 1.5rem; margin: 1rem 0; text-align: left;
+    }
+    .card h2 { font-size: 1rem; margin: 0 0 0.75rem; color: #2dd4bf; }
+    .phone { font-size: 1.35rem; font-weight: 600; letter-spacing: 0.02em; }
+    a { color: #2dd4bf; }
+    .note { font-size: 0.85rem; opacity: 0.65; margin-top: 1.5rem; }
+    .back { display: inline-block; margin-top: 2rem; }
+  </style>
 </head>
 <body>
-  <main style="max-width:640px;margin:4rem auto;padding:2rem;text-align:center;color:#e0e0e0;font-family:system-ui,sans-serif">
+  <main>
     <h1>Buy me a coffee</h1>
-    <p>Support ROMA Execution Bridge — self-hosted GPU orchestration.</p>
-    <p style="margin-top:2rem"><a href="index.html" style="color:#2dd4bf">← Back to home</a></p>
+    <p class="sub">Поддержка ROMA Execution Bridge — self-hosted GPU orchestration.</p>
+
+    <div class="card">
+      <h2>Kaspi перевод</h2>
+      <p>По номеру телефона (не по карте):</p>
+      <p class="phone">+7 702 512 42 63</p>
+      <p class="note">В комментарии можно указать: ROMA / DecisionOS</p>
+    </div>
+
+    <div class="card">
+      <h2>Telegram</h2>
+      <p>Напишите — подскажем актуальный способ поддержки.</p>
+      <p><!-- подставьте @username, если есть -->
+        <a href="https://t.me/">Telegram</a>
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>QR (Kaspi)</h2>
+      <p class="note">Сюда можно положить QR для приёма перевода (картинка qr.png в репо).</p>
+      <!-- <img src="qr.png" alt="Kaspi QR" width="200" height="200"/> -->
+    </div>
+
+    <a class="back" href="index.html">← На главную</a>
   </main>
 </body>
 </html>
