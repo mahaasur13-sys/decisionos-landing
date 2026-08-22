@@ -1,0 +1,598 @@
+    /* ===== Decision AI Chat Widget ===== */
+    .chat-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px; border-bottom: 1px solid #21262d;
+      background: #161b22; flex-shrink: 0;
+    }
+    .chat-title { display: flex; align-items: center; gap: 10px; color: #e6edf3; }
+    .chat-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, #6c5ce7, #a855f7);
+      display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff;
+    }
+    .chat-title strong { font-size: 15px; display: block; }
+    .chat-title small { font-size: 11px; color: #8b949e; display: block; }
+    .chat-header-actions { display: flex; gap: 6px; }
+    .chat-header-btn {
+      background: none; border: 1px solid #30363d; color: #8b949e;
+      width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
+      font-size: 16px; display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, color 0.15s;
+    }
+    .chat-header-btn:hover { background: #21262d; color: #e6edf3; }
+    .chat-messages {
+      flex: 1; overflow-y: auto; padding: 16px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .chat-messages::-webkit-scrollbar { width: 5px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: #30363d; border-radius: 10px; }
+    .chat-message { max-width: 85%; padding: 10px 14px; border-radius: 14px; font-size: 13px; line-height: 1.5; word-break: break-word; }
+    .chat-message.user { align-self: flex-end; background: #6c5ce7; color: #fff; border-bottom-right-radius: 4px; }
+    .chat-message.bot { align-self: flex-start; background: #161b22; color: #e6edf3; border: 1px solid #30363d; border-bottom-left-radius: 4px; }
+    .chat-message.bot.typing { color: #8b949e; font-style: italic; }
+    .chat-input-area {
+      padding: 12px 16px; border-top: 1px solid #21262d; background: #161b22;
+      display: flex; gap: 8px; align-items: flex-end; flex-shrink: 0;
+    }
+    .chat-input-area textarea {
+      flex: 1; background: #0d1117; border: 1px solid #30363d; border-radius: 12px;
+      color: #e6edf3; padding: 10px 14px; font-size: 13px; resize: none;
+      min-height: 38px; max-height: 130px; outline: none; font-family: inherit;
+    }
+    .chat-input-area textarea:focus { border-color: #6c5ce7; }
+    .chat-input-area button {
+      background: #6c5ce7; border: 0; color: #fff; width: 38px; height: 38px;
+      border-radius: 12px; cursor: pointer; font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s; flex-shrink: 0;
+    }
+    .chat-input-area button:hover { background: #7c3aed; }
+    .chat-input-area button:disabled { background: #21262d; color: #484f58; cursor: not-allowed; }
+    .chat-input-area button.hidden { display: none; }
+    .chat-api-badge {
+      display: flex; align-items: center; gap: 5px; font-size: 11px;
+      padding: 3px 10px; border-radius: 20px; background: #161b22;
+      border: 1px solid #21262d; color: #8b949e; margin-right: auto;
+      transition: border-color 0.2s;
+    }
+    .chat-api-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: #484f58; }
+    .chat-api-badge.active { border-color: #238636; }
+    .chat-api-badge.active .dot { background: #3fb950; }
+    @media (max-width: 600px) {
+      .chat-panel { inset: 0; width: 100%; height: 100%; max-width: 100%; max-height: 100%; border: 0; border-radius: 0; }
+      .chat-toggle { right: 16px; bottom: 16px; }
+    }
+    /* API Key Modal */
+    .api-key-overlay {
+      position: fixed; inset: 0; z-index: 99999; background: rgba(0,0,0,0.65);
+      display: none; align-items: center; justify-content: center;
+    }
+    .api-key-overlay.open { display: flex; }
+    .api-key-modal {
+      background: #161b22; border: 1px solid #30363d; border-radius: 16px;
+      padding: 28px; width: 400px; max-width: 90vw; box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+    }
+    .api-key-modal h3 { color: #e6edf3; margin: 0 0 12px; font-size: 18px; }
+    .api-key-modal p { color: #8b949e; font-size: 13px; margin: 0 0 16px; }
+    .api-key-modal .input-wrap { position: relative; margin-bottom: 16px; }
+    .api-key-modal input {
+      width: 100%; background: #0d1117; border: 1px solid #30363d; border-radius: 10px;
+      color: #e6edf3; padding: 10px 40px 10px 14px; font-size: 13px; outline: none; box-sizing: border-box;
+    }
+    .api-key-modal input:focus { border-color: #6c5ce7; }
+    .api-key-eye {
+      position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+      background: none; border: 0; color: #8b949e; cursor: pointer; font-size: 18px; padding: 4px 8px;
+    }
+    .api-key-eye:hover { color: #e6edf3; }
+    .api-key-actions { display: flex; gap: 8px; }
+    .api-key-actions button {
+      flex: 1; padding: 10px; border-radius: 10px; font-size: 13px; cursor: pointer;
+      border: 1px solid #30363d; transition: background 0.15s;
+    }
+    .btn-save { background: #6c5ce7; color: #fff; border-color: #6c5ce7; }
+    .btn-save:hover { background: #7c3aed; }
+    .btn-delete { background: transparent; color: #f85149; border-color: #f8514922; }
+    .btn-delete:hover { background: #f8514922; }
+    .btn-cancel { background: transparent; color: #8b949e; }
+    .btn-cancel:hover { background: #21262d; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-brand"><span class="logo-icon">⚡</span>DecisionOS</a>
+    <div class="navbar-links">
+      <a href="#features">Features</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="docs.html">Docs</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="#chat-demo" class="btn-nav">Try AI Chat</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-badge">🎯 Enterprise SaaS · v1.0.0</div>
+  <h1>Ship <span class="gradient-text">Decisions</span>,<br>Not Infrastructure</h1>
+  <p class="hero-sub">Multi-tenant decision engine with Policy Engine, Decision Gate, and Crypto Payments. Built on ROMA Execution Bridge. 32/32 tests green.</p>
+  <div class="hero-cta">
+    <a href="#chat-demo" class="btn-primary">Talk to AI Assistant</a>
+    <a href="docs.html" class="btn-secondary">Read the Docs</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num" data-target="32">0</div><div class="stat-label">Tests Passing</div></div>
+    <div class="stat"><div class="stat-num" data-target="15">0</div><div class="stat-label">Policy Actions</div></div>
+    <div class="stat"><div class="stat-num" data-target="17">0</div><div class="stat-label">API Endpoints</div></div>
+    <div class="stat"><div class="stat-num" data-target="8000">0</div><div class="stat-label">Lines of Code</div></div>
+  </div>
+</header>
+
+<!-- Features -->
+<section id="features" class="section">
+  <h2 class="section-title">Everything you need to <span class="gradient-text">ship decisions</span></h2>
+  <p class="section-sub">From Policy Engine to Crypto Payments — one unified platform.</p>
+  <div class="features-grid">
+    <div class="feature-card animate-in">
+      <div class="feature-icon">🛡️</div>
+      <h3>Decision Gate</h3>
+      <p>Triple-guard: ExecutionAllowed = Quota ∧ Cost ∧ Policy. Every decision verified before execution.</p>
+    </div>
+    <div class="feature-card animate-in delay-1">
+      <div class="feature-icon">⚙️</div>
+      <h3>Policy Engine</h3>
+      <p>15+ actions across crypto, wallet, and support operations. Tier-aware Start/Pro/Enterprise.</p>
+    </div>
+    <div class="feature-card animate-in delay-2">
+      <div class="feature-icon">₿</div>
+      <h3>Crypto Payments</h3>
+      <p>NOWPayments + Monero view-only wallets. Subaddress-per-invoice, never store spend keys.</p>
+    </div>
+    <div class="feature-card animate-in delay-1">
+      <div class="feature-icon">🏢</div>
+      <h3>Multi-Tenant</h3>
+      <p>Full tenant isolation via x-tenant-id / x-api-key headers. Tier-based rate limiting.</p>
+    </div>
+    <div class="feature-card animate-in delay-2">
+      <div class="feature-icon">💬</div>
+      <h3>Support Chat</h3>
+      <p>Real-time WebSocket chat, ticket management, CSAT ratings, agent assignment.</p>
+    </div>
+    <div class="feature-card animate-in delay-3">
+      <div class="feature-icon">📋</div>
+      <h3>Audit Trail</h3>
+      <p>12+ event types, every decision logged. PostgreSQL + TimescaleDB hypertables.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">✦</div>
+      <h3>Decision AI</h3>
+      <p>AI-ассистент с историей диалогов, streaming-ответами и поддержкой API-ключей. Нажмите кнопку <strong>Decision AI</strong> в правом нижнем углу.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Code Demo -->
+<section class="code-section section">
+  <h2 class="section-title">Simple API. <span class="gradient-text">Powerful decisions.</span></h2>
+  <div class="code-block">
+    <div class="code-header"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-filename">POST /v1/decisions/evaluate</span></div>
+    <div class="code-body"><pre><span class="keyword">curl</span> -X POST https://api.decisionos.io/v1/decisions/evaluate \
+  -H <span class="string">"x-tenant-id: tenant_abc123"</span> \
+  -H <span class="string">"x-api-key: dos_v1_..."</span> \
+  -H <span class="string">"Content-Type: application/json"</span> \
+  -d <span class="string">'{"action": "crypto:invoice:create", "context": {"amount_usd": 250, "currency": "XMR"}}'</span></pre></div>
+  </div>
+  <div class="code-block" style="margin-top:16px">
+    <div class="code-header"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-filename">Response 200 OK</span></div>
+    <div class="code-body"><pre>{
+  <span class="string">"allowed"</span>: <span class="keyword">true</span>,
+  <span class="string">"decision_id"</span>: <span class="string">"dec_4x7k2m"</span>,
+  <span class="string">"gate"</span>: { <span class="string">"quota"</span>: <span class="string">"OK"</span>, <span class="string">"cost"</span>: <span class="string">"OK"</span>, <span class="string">"policy"</span>: <span class="string">"OK"</span> },
+  <span class="string">"invoice"</span>: { <span class="string">"id"</span>: <span class="string">"inv_xmr_92k"</span>, <span class="string">"pay_address"</span>: <span class="string">"88xMR...7fK"</span>, <span class="string">"amount_xmr"</span>: 1.82 }
+}</pre></div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>
+    <div class="footer-brand">⚡ DecisionOS</div>
+    <p style="color:var(--text-muted);font-size:13px;margin-top:4px;">Enterprise decision infrastructure</p>
+  </div>
+  <div class="footer-links">
+    <div class="footer-col"><h4>Product</h4><a href="#features">Features</a><a href="pricing.html">Pricing</a><a href="docs.html">Documentation</a><a href="dashboard.html">Dashboard</a></div>
+    <div class="footer-col"><h4>Developers</h4><a href="docs.html#api">API Reference</a><a href="docs.html#policy">Policy Engine</a><a href="docs.html#webhooks">Webhooks</a></div>
+    <div class="footer-col"><h4>Company</h4><a href="#">About</a><a href="#">Blog</a><a href="#">Contact</a></div>
+  </div>
+</footer>
+<div class="footer-bottom"><span>© 2026 DecisionOS. All rights reserved.</span><span>v1.0.0 · Built on ROMA Execution Bridge</span></div>
+
+<button id="chat-toggle" class="chat-toggle" aria-label="Открыть чат" aria-expanded="false">✦</button>
+<section id="chat-panel" class="chat-panel hidden" aria-label="Decision AI чат">
+  <header class="chat-header">
+    <div class="chat-title">
+      <div class="chat-avatar" aria-hidden="true">✦</div>
+      <div><strong>Decision AI</strong><small>Ассистент DecisionOS · help</small></div>
+    </div>
+    <div class="chat-header-actions">
+      <button id="chat-api-key-btn" class="chat-header-btn" aria-label="API Key" title="API Key">🔑</button>
+      <button id="chat-clear" class="chat-header-btn" aria-label="Очистить историю" title="Очистить">🗑</button>
+      <button id="chat-close" class="chat-header-btn" aria-label="Закрыть чат">✕</button>
+    </div>
+  </header>
+  <div id="chat-messages" class="chat-messages"></div>
+  <div class="chat-input-area">
+    <div id="chat-api-badge" class="chat-api-badge"><span class="dot"></span> demo</div>
+    <textarea id="chat-input" rows="1" placeholder="Спросите о DecisionOS..."></textarea>
+    <button id="chat-send" aria-label="Отправить">➤</button>
+    <button id="chat-stop" class="hidden" aria-label="Остановить">■</button>
+  </div>
+</section>
+<!-- API Key Modal -->
+<div id="api-key-overlay" class="api-key-overlay">
+  <div class="api-key-modal">
+    <h3>Decision AI API Key</h3>
+    <p>Вставьте ключ DeepSeek / OpenAI для полного доступа. Без ключа работает demo-режим с мок-ответами.</p>
+    <div class="input-wrap">
+      <input id="api-key-input" type="password" placeholder="sk-...">
+      <button id="api-key-eye" class="api-key-eye">👁</button>
+    </div>
+    <div class="api-key-actions">
+      <button id="api-key-save" class="btn-save">Сохранить</button>
+      <button id="api-key-delete" class="btn-delete">Удалить</button>
+      <button class="btn-cancel">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ======= Counter Animation =======
+function animateCounters() {
+  document.querySelectorAll('.stat-num[data-target]').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const duration = 2000;
+    const step = target / (duration / 16);
+    let current = 0;
+    const update = () => {
+      current += step;
+      if (current < target) {
+        el.textContent = target >= 1000 ? Math.floor(current).toLocaleString() : Math.floor(current);
+        requestAnimationFrame(update);
+      } else {
+        el.textContent = target >= 1000 ? target.toLocaleString() : target;
+      }
+    };
+    update();
+  });
+}
+
+// ======= AI Chat =======
+const chatResponses = {
+  'decision gate': `The <strong>Decision Gate</strong> is our triple-guard system:
+
+<strong>ExecutionAllowed = Quota OK ∧ Cost OK ∧ Policy OK</strong>
+
+1. <strong>Quota Check</strong> — Does the tenant have remaining capacity? (Start: 5 invoices/mo, Pro: 20, Enterprise: 100)
+2. <strong>Cost Check</strong> — Is the action within budget?
+3. <strong>Policy Check</strong> — Does it pass all policy rules?
+
+All three must pass. If any fails, the action is denied with a machine-readable error code.`,
+  'policy engine': `The <strong>Policy Engine</strong> has 15+ actions across 4 modules:
+
+• <strong>crypto:invoice:create</strong> — Create payment invoice
+• <strong>crypto:webhook:receive</strong> — Process webhooks
+• <strong>wallet:address:generate</strong> — Generate deposit addresses
+• <strong>support:ticket:create</strong> — Open support tickets
+• <strong>support:agent:assign</strong> — Assign support agents
+
+Each action is evaluated against tenant tier limits. Example: <code>evaluate_policies(tenant_id, action, context) → {result, reason, policy_name}</code>`,
+  'pricing': `Our <strong>three tiers</strong>:
+
+| Tier | Price | Crypto Invoices | SSH | White-Label |
+|------|-------|----------------|-----|-------------|
+| <strong>Start</strong> | $49/mo | 5/mo | ❌ | ❌ |
+| <strong>Pro</strong> | $199/mo | 20/mo | ✅ | ❌ |
+| <strong>Enterprise</strong> | Custom | 100/mo | ✅ | ✅ |
+
+Enterprise includes OIDC/SAML SSO, dedicated infrastructure, and SLA. <a href="pricing.html" style="color:var(--accent-light)">See full comparison →</a>`,
+  'crypto': `We support <strong>multiple crypto providers</strong>:
+
+• <strong>NOWPayments</strong> — BTC, ETH, XMR, LTC, +100 coins
+• <strong>Monero (XMR)</strong> — View-only wallets, subaddress-per-invoice, <em>never store spend keys</em>
+• <strong>Heleket / CryptoCloud / BTCPay</strong> — Provider wallet adapters
+
+Key privacy feature: Monero integration uses view-only wallets — we can verify payments without the ability to spend funds.`,
+  'api': `The <strong>REST API</strong> has 10+ endpoints:
+
+<strong>Crypto Payments:</strong> POST /v1/crypto/invoices, GET .../{id}, POST .../webhooks/{provider}
+<strong>Wallets:</strong> POST /v1/crypto/wallets, POST .../{id}/addresses, POST .../rotate
+<strong>Support:</strong> POST /v1/support/tickets, GET .../{ticket_id}, WebSocket /ws/support/{ticket_id}
+
+All endpoints use tenant-level auth via x-tenant-id and x-api-key headers. <a href="docs.html" style="color:var(--accent-light)">Full API docs →</a>`,
+  'test': `We have <strong>32/32 tests passing</strong> ✅:
+
+• <strong>crypto_payments:</strong> 10/10 tests
+• <strong>wallets:</strong> 10/10 tests (3 Monero-specific)
+• <strong>support_chat:</strong> 12/12 tests (WebSocket + Monero context)
+
+Run them yourself: <code>python -m pytest tests/ -v</code>`,
+};
+
+function sendChat(text) {
+  const input = document.getElementById('chatInput');
+  const msg = (text || input.value).trim();
+  if (!msg) return;
+
+  input.value = '';
+  input.disabled = true;
+  document.getElementById('chatSendBtn').disabled = true;
+  document.getElementById('chatSuggestions').style.display = 'none';
+
+  const messages = document.getElementById('chatMessages');
+  const time = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+
+  // Add user message
+  messages.innerHTML += `<div class="chat-msg user"><div class="bubble">${escapeHtml(msg)}</div><div class="time">${time}</div></div>`;
+  messages.scrollTop = messages.scrollHeight;
+
+  // Show typing
+  const typing = document.getElementById('chatTyping');
+  typing.style.display = 'block';
+
+  // Simulate response after delay
+  setTimeout(() => {
+    typing.style.display = 'none';
+    const reply = findReply(msg);
+    messages.innerHTML += `<div class="chat-msg ai"><div class="bubble">${reply}</div><div class="time">${time}</div></div>`;
+    messages.scrollTop = messages.scrollHeight;
+    input.disabled = false;
+    document.getElementById('chatSendBtn').disabled = false;
+  }, 800 + Math.random() * 1000);
+}
+
+function findReply(query) {
+  const q = query.toLowerCase();
+  for (const [key, response] of Object.entries(chatResponses)) {
+    if (q.includes(key)) return response;
+  }
+  const fallbacks = [
+    "I can help with: <strong>Decision Gate</strong>, <strong>Policy Engine</strong>, <strong>Pricing tiers</strong>, <strong>Crypto payments</strong>, or <strong>API docs</strong>. What would you like to know?",
+    "Great question! I specialize in DecisionOS features. Try asking about the <strong>Decision Gate</strong>, <strong>Policy Engine</strong>, or <strong>Pricing</strong>.",
+    "I'm the DecisionOS demo assistant. Ask me anything about the platform — the triple-guard Decision Gate, 15+ policy actions, crypto payments, or our 32/32 test suite."
+  ];
+  return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// ======= Smooth Scroll =======
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({behavior:'smooth',block:'start'}); }
+  });
+});
+
+// ======= Init =======
+document.addEventListener('DOMContentLoaded', () => {
+  animateCounters();
+});
+</script>
+<!-- ======= Decision AI Chat Widget =======
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const toggleBtn = $('chat-toggle');
+  const panel = $('chat-panel');
+  const closeBtn = $('chat-close');
+  const clearBtn = $('chat-clear');
+  const messagesEl = $('chat-messages');
+  const input = $('chat-input');
+  const sendBtn = $('chat-send');
+  const stopBtn = $('chat-stop');
+  const apiBadge = $('chat-api-badge');
+  const apiKeyBtn = $('chat-api-key-btn');
+  const apiKeyOverlay = $('api-key-overlay');
+  const apiKeyInput = $('api-key-input');
+  const apiKeyEye = $('api-key-eye');
+  const apiKeySave = $('api-key-save');
+  const apiKeyDelete = $('api-key-delete');
+
+  const HISTORY_KEY = 'decisionos_chat_history_v1';
+  const NAME_KEY = 'decisionos_chat_user_name';
+  const API_KEY_KEY = 'decisionos_api_key';
+
+  let history = loadHistory();
+  let isGenerating = false;
+  let abortController = null;
+  let currentBotEl = null;
+
+  function loadHistory() {
+    try {
+      const stored = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+      if (!Array.isArray(stored)) return [];
+      return stored.filter(item => item && (item.role === 'user' || item.role === 'assistant') && typeof item.content === 'string').slice(-100);
+    } catch { return []; }
+  }
+  function saveHistory() { localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(-100))); }
+  function getName() { return localStorage.getItem(NAME_KEY) || ''; }
+  function setName(n) { localStorage.setItem(NAME_KEY, n); }
+  function getApiKey() { return localStorage.getItem(API_KEY_KEY) || ''; }
+
+  function updateApiBadge() {
+    const has = !!getApiKey();
+    apiBadge.className = 'chat-api-badge' + (has ? ' active' : '');
+    apiBadge.innerHTML = '<span class="dot"></span> ' + (has ? 'api' : 'demo');
+  }
+
+  function scrollToBottom() { messagesEl.scrollTop = messagesEl.scrollHeight; }
+
+  function appendMessage(text, role, save) {
+    const el = document.createElement('div');
+    el.className = 'chat-message ' + (role === 'user' ? 'user' : 'bot');
+    el.textContent = text;
+    messagesEl.appendChild(el);
+    if (save !== false) {
+      history.push({ role: role === 'user' ? 'user' : 'assistant', content: text });
+      saveHistory();
+    }
+    scrollToBottom();
+    return el;
+  }
+
+  function renderHistory() {
+    messagesEl.replaceChildren();
+    if (history.length === 0) {
+      const name = getName();
+      appendMessage(name ? `Привет, ${name}! Я AI-ассистент DecisionOS. Чем помочь?` : 'Привет! Я AI-ассистент DecisionOS. Как к вам обращаться?', 'assistant', false);
+    } else {
+      history.forEach(item => appendMessage(item.content, item.role === 'user' ? 'user' : 'assistant', false));
+    }
+  }
+
+  function askName() {
+    if (getName()) return;
+    const entered = window.prompt('Как к вам обращаться?');
+    if (entered && entered.trim()) setName(entered.trim().slice(0, 80));
+  }
+
+  function autoResize() {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 130) + 'px';
+  }
+
+  function setGenerating(v) {
+    isGenerating = v;
+    sendBtn.disabled = v || !input.value.trim();
+    stopBtn.classList.toggle('hidden', !v);
+  }
+
+  function getDemoResponse(msg) {
+    const lower = msg.toLowerCase();
+    if (lower.includes('policy') || lower.includes('полиси')) return 'DecisionOS Policy Engine — это 15+ actions для контроля доступа: crypto:invoice:create, crypto:invoice:read, crypto:webhook:receive, crypto:payment:activate_tier, wallet:create, wallet:rotate, support:ticket:create, support:ticket:assign и другие. Каждый action проверяется через Decision Gate: Quota ∧ Cost ∧ Policy.';
+    if (lower.includes('gate') || lower.includes('decision gate')) return 'Decision Gate — тройной guard: Quota OK ∧ Cost OK ∧ Policy OK. Все три условия должны быть выполнены для ExecutionAllowed = true. Это основа архитектуры безопасности DecisionOS.';
+    if (lower.includes('crypto') || lower.includes('крипто')) return 'Crypto Payments поддерживает Monero (XMR) через NOWPayments с view-only wallets. Суб-адреса создаются под каждый инвойс. Никогда не храним spend keys. Тиры: Start (5 инвойсов/мес), Pro (20), Enterprise (100).';
+    if (lower.includes('test') || lower.includes('тест')) return 'Все 32 теста зелёные: 10/10 crypto_payments, 10/10 wallets, 12/12 support_chat. Запуск: python -m pytest tests/test_crypto_payments.py tests/test_crypto_wallets.py tests/test_support_chat.py -v';
+    if (lower.includes('api') || lower.includes('эндпоинт')) return 'DecisionOS v1.0.0: 10 REST + 1 WebSocket эндпоинтов. Crypto: POST /v1/crypto/invoices, GET .../invoices/{id}, POST .../webhooks/{provider}. Wallets: POST /v1/crypto/wallets, .../addresses, .../monero/subaddress, .../rotate. Support: CRUD /v1/support/tickets + WS /ws/support/{ticket_id}.';
+    return 'Я AI-ассистент DecisionOS. Могу рассказать о Policy Engine, Decision Gate, Crypto Payments, архитектуре, тестах и эндпоинтах. Также доступен demo-режим без API-ключа.';
+  }
+
+  async function sendMessage() {
+    const msg = input.value.trim();
+    if (!msg || isGenerating) return;
+    appendMessage(msg, 'user');
+    input.value = ''; autoResize();
+    setGenerating(true);
+    abortController = new AbortController();
+    currentBotEl = document.createElement('div');
+    currentBotEl.className = 'chat-message bot typing';
+    currentBotEl.textContent = 'печатает...';
+    messagesEl.appendChild(currentBotEl);
+    scrollToBottom();
+
+    const apiKey = getApiKey();
+    if (apiKey) {
+      try {
+        const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+          body: JSON.stringify({ model: 'gpt-4o-mini', messages: [{ role: 'system', content: 'You are Decision AI, assistant for DecisionOS platform.' }, ...history.map(h => ({ role: h.role, content: h.content }))], stream: true }),
+          signal: abortController.signal
+        });
+        if (!resp.ok) throw new Error('API error ' + resp.status);
+        const reader = resp.body.getReader();
+        const decoder = new TextDecoder();
+        let answer = '';
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const chunk = decoder.decode(value, { stream: true });
+          const lines = chunk.split('\n').filter(l => l.startsWith('data: '));
+          for (const line of lines) {
+            const data = line.slice(6);
+            if (data === '[DONE]') continue;
+            try { answer += JSON.parse(data).choices[0]?.delta?.content || ''; } catch {}
+          }
+          currentBotEl.classList.remove('typing');
+          currentBotEl.textContent = answer;
+          scrollToBottom();
+        }
+        if (answer.trim()) { history.push({ role: 'assistant', content: answer.trim() }); saveHistory(); }
+      } catch (err) {
+        if (err.name === 'AbortError') {
+          currentBotEl.classList.remove('typing');
+          currentBotEl.textContent = (currentBotEl.textContent + ' [прервано]').trim();
+        } else {
+          currentBotEl.remove();
+          appendMessage('Ошибка: ' + err.message, 'assistant');
+        }
+      }
+    } else {
+      // Demo mode
+      await new Promise(r => setTimeout(r, 600 + Math.random() * 800));
+      currentBotEl.classList.remove('typing');
+      const answer = getDemoResponse(msg);
+      currentBotEl.textContent = answer;
+      history.push({ role: 'assistant', content: answer });
+      saveHistory();
+    }
+    currentBotEl = null;
+    abortController = null;
+    setGenerating(false);
+    scrollToBottom();
+  }
+
+  function openChat() { askName(); renderHistory(); panel.classList.remove('hidden'); toggleBtn.setAttribute('aria-expanded', 'true'); input.focus(); }
+  function closeChat() { panel.classList.add('hidden'); toggleBtn.setAttribute('aria-expanded', 'false'); }
+
+  toggleBtn.addEventListener('click', () => panel.classList.contains('hidden') ? openChat() : closeChat());
+  closeBtn.addEventListener('click', closeChat);
+  clearBtn.addEventListener('click', () => {
+    if (isGenerating) abortController?.abort();
+    history = []; localStorage.removeItem(HISTORY_KEY); askName(); renderHistory();
+  });
+  sendBtn.addEventListener('click', sendMessage);
+  stopBtn.addEventListener('click', () => { abortController?.abort(); });
+  input.addEventListener('input', () => { autoResize(); sendBtn.disabled = isGenerating || !input.value.trim(); });
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
+
+  // API Key modal
+  function openApiKeyModal() {
+    apiKeyInput.value = getApiKey();
+    apiKeyInput.type = 'password';
+    apiKeyEye.textContent = '👁';
+    apiKeyOverlay.classList.add('open');
+    apiKeyInput.focus();
+  }
+  function closeApiKeyModal() { apiKeyOverlay.classList.remove('open'); }
+  apiKeyBtn.addEventListener('click', openApiKeyModal);
+  apiKeyEye.addEventListener('click', () => {
+    const isPass = apiKeyInput.type === 'password';
+    apiKeyInput.type = isPass ? 'text' : 'password';
+    apiKeyEye.textContent = isPass ? '🙈' : '👁';
+  });
+  apiKeySave.addEventListener('click', () => {
+    const val = apiKeyInput.value.trim();
+    if (!val) return;
+    localStorage.setItem(API_KEY_KEY, val);
+    updateApiBadge();
+    closeApiKeyModal();
+  });
+  apiKeyDelete.addEventListener('click', () => {
+    localStorage.removeItem(API_KEY_KEY);
+    apiKeyInput.value = '';
+    updateApiBadge();
+    closeApiKeyModal();
+  });
+  apiKeyOverlay.querySelector('.btn-cancel').addEventListener('click', closeApiKeyModal);
+  apiKeyOverlay.addEventListener('click', (e) => { if (e.target === apiKeyOverlay) closeApiKeyModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && apiKeyOverlay.classList.contains('open')) closeApiKeyModal(); });
+  updateApiBadge();
+})();
