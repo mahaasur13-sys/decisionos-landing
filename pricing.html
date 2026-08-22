@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pricing — DecisionOS v2.0 · ROMA Execution Bridge</title>
+<title>Pricing — v2.1.0 · ROMA Execution Bridge</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -170,7 +170,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-he
 
 <header class="header">
   <div class="container header-inner">
-    <a href="/" class="logo-a"><div class="logo">ROMA<span class="logo-badge">DecisionOS v2.0</span></div></a>
+    <a href="/" class="logo-a"><div class="logo">ROMA<span class="logo-badge">v2.1.0</span></div></a>
     <nav class="nav">
       <a href="/features.html">Features</a>
       <a href="/pricing.html" class="active">Pricing</a>
@@ -200,9 +200,9 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-he
     <div class="plan" id="planFree">
       <div class="plan-name">Free</div><div class="plan-desc">For prototyping & exploration</div>
       <div class="plan-price" data-monthly="0" data-annual="0">$0</div>
-      <div class="plan-period">/ month — forever free</div>
+      <div class="plan-period">/ spend-cap</div>
       <ul class="plan-features">
-        <li><span class="li-check">✓</span> 50 GPU-minutes / month</li>
+        <li><span class="li-check">✓</span> 5 GPU-min (300 GPU-sec) · 50 jobs/mo</li>
         <li><span class="li-check">✓</span> 3 concurrent jobs</li>
         <li><span class="li-check">✓</span> T4 GPU access</li>
         <li><span class="li-check">✓</span> Community support</li>
@@ -214,15 +214,27 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-he
       <a href="/docs.html" class="plan-cta cta-ghost">Start Free</a>
     </div>
 
+    <div class="plan" id="planStart">
+      <div class="plan-name">Start</div><div class="plan-desc">For solo builders</div>
+      <div class="plan-price" data-monthly="5" data-annual="5">$5</div>
+      <div class="plan-period">/ spend-cap</div>
+      <ul class="plan-features">
+        <li><span class="li-check">✓</span> 60 GPU-min (3,600 GPU-sec) · 50 jobs/mo</li>
+        <li><span class="li-check">✓</span> Local GPU + T4 access</li>
+        <li><span class="li-check">✓</span> Full API access</li>
+      </ul>
+      <a href="/docs.html" class="plan-cta cta-ghost">Start $5</a>
+    </div>
+
     <div class="plan featured" id="planPro">
       <div class="plan-badge">Most Popular</div>
       <div class="plan-name">Pro</div><div class="plan-desc">For production AI teams</div>
-      <div class="plan-price" data-monthly="49" data-annual="39">$49</div>
-      <div class="plan-period">/ month</div>
+      <div class="plan-price" data-monthly="50" data-annual="50">$50</div>
+      <div class="plan-period">/ spend-cap</div>
       <ul class="plan-features">
-        <li><span class="li-check">✓</span> 2,000 GPU-minutes / month</li>
+        <li><span class="li-check">✓</span> 600 GPU-min (36,000 GPU-sec) · 150 jobs/mo</li>
         <li><span class="li-check">✓</span> 20 concurrent jobs</li>
-        <li><span class="li-check">✓</span> A100 & H100 GPU access</li>
+        <li><span class="li-check">✓</span> Local GPU (RTX 3060) + remote backends</li>
         <li><span class="li-check">✓</span> Priority support (Slack)</li>
         <li><span class="li-check">✓</span> Full API + webhooks</li>
         <li><span class="li-check">✓</span> ₿ Crypto payments enabled</li>
@@ -241,7 +253,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-he
         <li><span class="li-check">✓</span> Dedicated clusters</li>
         <li><span class="li-check">✓</span> All GPU topologies</li>
         <li><span class="li-check">✓</span> Dedicated account manager</li>
-        <li><span class="li-check">✓</span> SLA 99.9%</li>
+        <li><span class="li-check">✓</span> Custom SLA (по договору)</li>
         <li><span class="li-check">✓</span> Custom crypto billing</li>
         <li><span class="li-check">✓</span> Private Monero wallets</li>
         <li><span class="li-check">✓</span> Multi-wallet support</li>
@@ -255,7 +267,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-he
     <div class="tbl-wrap"><table class="tbl">
       <thead><tr><th>Feature</th><th>Free</th><th>Pro</th><th>Enterprise</th></tr></thead>
       <tbody>
-        <tr><td>GPU-minutes</td><td>50 / month</td><td>2,000 / month</td><td>Unlimited</td></tr>
+        <tr><td>GPU-minutes</td><td>5</td><td>600</td><td>Unlimited</td></tr>
         <tr><td>Concurrent jobs</td><td>3</td><td>20</td><td>Unlimited</td></tr>
         <tr><td>API rate limits</td><td>60 req/min</td><td>600 req/min</td><td>6,000 req/min</td></tr>
         <tr><td>GPU types</td><td>T4</td><td>A100, H100</td><td>All topologies</td></tr>
@@ -303,7 +315,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-he
   </section>
 </main>
 
-<footer class="footer"><div class="container">ROMA Execution Bridge · DecisionOS v2.0 · Enterprise GPU Infrastructure</div></footer>
+<footer class="footer"><div class="container">ROMA Execution Bridge · v2.1.0 · self-hosted GPU Infrastructure</div></footer>
 
 <!-- API KEY MODAL -->
 <div class="modal-overlay" id="apiKeyModal">
@@ -377,7 +389,7 @@ document.getElementById('removeMoneroBtn').addEventListener('click',()=>{localSt
 updateCryptoS()})();
 
 /* Chat */
-(function(){const fab=document.getElementById('chatFab'),we=document.getElementById('chatWindow'),cb=document.getElementById('chatCloseBtn'),me=document.getElementById('chatMessages'),ie=document.getElementById('chatInput'),sb=document.getElementById('chatSend'),stb=document.getElementById('chatStop');const HK='roma_chat_history',NK='roma_user_name';let un=gK(NK),is=!1,ac=null;function oc(){we.classList.add('open');if(!un)setTimeout(()=>{const n=prompt('Введите ваше имя:');if(n&&n.trim()){un=n.trim();localStorage.setItem(NK,un);as('Добро пожаловать, '+un+'!')}},300);ie.focus()}function cc(){we.classList.remove('open')}fab.addEventListener('click',oc);cb.addEventListener('click',cc);function am(r,t){const d=document.createElement('div');d.className='msg '+r;d.textContent=t;me.appendChild(d);me.scrollTop=me.scrollHeight;sh();return d}function as(t){am('system',t)}function sh(){const ms=[];me.querySelectorAll('.msg').forEach(m=>{if(!m.classList.contains('system'))ms.push({role:m.classList.contains('user')?'user':'assistant',text:m.textContent})});localStorage.setItem(HK,JSON.stringify(ms.slice(-40)))}function lh(){try{const r=gK(HK);if(!r)return;JSON.parse(r).forEach(m=>am(m.role,m.text))}catch(e){}}lh();if(me.children.length===0)as('ROMA AI Assistant online. Pro plan supports crypto payments via NOWPayments.');async function sr(ut){is=!0;sb.style.display='none';stb.classList.add('visible');ac=new AbortController();const ad=am('assistant',''),rs=['Pricing query received. Pro plan: $49/month — 2,000 GPU-minutes, crypto payments enabled.','Free: 50 GPU-min, community support. Enterprise: unlimited, custom crypto billing.','Would you like to upgrade or create a crypto invoice?'];let full='';try{for(const c of rs){if(ac.signal.aborted)break;for(const ch of c+' '){if(ac.signal.aborted)break;full+=ch;ad.textContent=full;me.scrollTop=me.scrollHeight;await new Promise(r=>setTimeout(r,10+Math.random()*15))}await new Promise(r=>setTimeout(r,150))}}catch(e){}is=!1;sb.style.display='flex';stb.classList.remove('visible');sh()}function sm(){const t=ie.value.trim();if(!t||is)return;am('user',t);ie.value='';ie.style.height='auto';sr(t)}sb.addEventListener('click',sm);ie.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sm()}});stb.addEventListener('click',()=>{if(ac)ac.abort();is=!1;sb.style.display='flex';stb.classList.remove('visible')});ie.addEventListener('input',()=>{ie.style.height='auto';ie.style.height=Math.min(ie.scrollHeight,140)+'px'})})();
+(function(){const fab=document.getElementById('chatFab'),we=document.getElementById('chatWindow'),cb=document.getElementById('chatCloseBtn'),me=document.getElementById('chatMessages'),ie=document.getElementById('chatInput'),sb=document.getElementById('chatSend'),stb=document.getElementById('chatStop');const HK='roma_chat_history',NK='roma_user_name';let un=gK(NK),is=!1,ac=null;function oc(){we.classList.add('open');if(!un)setTimeout(()=>{const n=prompt('Введите ваше имя:');if(n&&n.trim()){un=n.trim();localStorage.setItem(NK,un);as('Добро пожаловать, '+un+'!')}},300);ie.focus()}function cc(){we.classList.remove('open')}fab.addEventListener('click',oc);cb.addEventListener('click',cc);function am(r,t){const d=document.createElement('div');d.className='msg '+r;d.textContent=t;me.appendChild(d);me.scrollTop=me.scrollHeight;sh();return d}function as(t){am('system',t)}function sh(){const ms=[];me.querySelectorAll('.msg').forEach(m=>{if(!m.classList.contains('system'))ms.push({role:m.classList.contains('user')?'user':'assistant',text:m.textContent})});localStorage.setItem(HK,JSON.stringify(ms.slice(-40)))}function lh(){try{const r=gK(HK);if(!r)return;JSON.parse(r).forEach(m=>am(m.role,m.text))}catch(e){}}lh();if(me.children.length===0)as('ROMA AI Assistant online. Pro plan supports crypto payments via NOWPayments.');async function sr(ut){is=!0;sb.style.display='none';stb.classList.add('visible');ac=new AbortController();const ad=am('assistant',''),rs=['Pricing: spend-cap Free $0 / Start $5 / Pro $50. GPU $0.00001/sec. No subscriptions.','Free: 5 GPU-min, Start: 60 GPU-min, Pro: 600 GPU-min. Enterprise: custom.','Would you like to start a free job?'];let full='';try{for(const c of rs){if(ac.signal.aborted)break;for(const ch of c+' '){if(ac.signal.aborted)break;full+=ch;ad.textContent=full;me.scrollTop=me.scrollHeight;await new Promise(r=>setTimeout(r,10+Math.random()*15))}await new Promise(r=>setTimeout(r,150))}}catch(e){}is=!1;sb.style.display='flex';stb.classList.remove('visible');sh()}function sm(){const t=ie.value.trim();if(!t||is)return;am('user',t);ie.value='';ie.style.height='auto';sr(t)}sb.addEventListener('click',sm);ie.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sm()}});stb.addEventListener('click',()=>{if(ac)ac.abort();is=!1;sb.style.display='flex';stb.classList.remove('visible')});ie.addEventListener('input',()=>{ie.style.height='auto';ie.style.height=Math.min(ie.scrollHeight,140)+'px'})})();
 </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Docs — DecisionOS v2.0 API</title>
+<title>Docs — v2.1.0 API</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -126,7 +126,7 @@ table td:first-child{font-family:var(--font-mono);font-size:0.82rem;color:var(--
 
 <header class="header">
   <div class="container header-inner">
-    <a href="/" class="logo-a"><div class="logo">ROMA<span class="logo-badge">v2.0</span></div></a>
+    <a href="/" class="logo-a"><div class="logo">ROMA<span class="logo-badge">v2.1.0</span></div></a>
     <nav class="nav">
       <a href="/features.html">Features</a>
       <a href="/pricing.html">Pricing</a>
@@ -155,6 +155,10 @@ table td:first-child{font-family:var(--font-mono);font-size:0.82rem;color:var(--
       <a href="#jobs" class="sidebar-link" data-search="jobs list all active queue">GET /jobs</a>
       <a href="#usage" class="sidebar-link" data-search="usage billing metrics cost gpu hours">GET /usage</a>
       <a href="#cancel" class="sidebar-link" data-search="cancel delete stop job task">DELETE /cancel</a>
+      <a href="#workers" class="sidebar-link" data-search="workers list gpu fleet">GET /workers</a>
+      <a href="#billing" class="sidebar-link" data-search="billing balance ledger spend cap">GET /billing/balance</a>
+      <a href="#metrics" class="sidebar-link" data-search="metrics prometheus observability">GET /metrics</a>
+      <a href="#alerts" class="sidebar-link" data-search="alerts status monitor">GET /alerts/status</a>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-section-title">Guides</div>
@@ -167,7 +171,7 @@ table td:first-child{font-family:var(--font-mono);font-size:0.82rem;color:var(--
   <main class="content" id="docContent">
 
 <h1>API Documentation</h1>
-<p>Complete reference for the ROMA Execution Bridge REST API. All endpoints return JSON. Base URL: <code class="code-inline">https://api.roma.dev/v1</code></p>
+<p>Complete reference for the ROMA Execution Bridge REST API. All endpoints return JSON. Base URL: <code class="code-inline">your ROMA host (e.g. http://localhost:8900)</code></p>
 
 <section id="overview">
 <h2>Overview</h2>
@@ -179,10 +183,10 @@ table td:first-child{font-family:var(--font-mono);font-size:0.82rem;color:var(--
 <h2>Quick Start</h2>
 <p>1. Get your API key from the dashboard<br>2. Set the <code class="code-inline">X-API-Key</code> header<br>3. Submit your first job</p>
 <div class="code-block"><div class="code-header"><span class="code-lang">bash</span><button class="code-copy">Copy</button></div><pre><code><span class="hl-comment"># Health check (no auth required)</span>
-<span class="hl-curl">curl</span> <span class="hl-string">https://api.roma.dev/v1/health</span>
+<span class="hl-curl">curl</span> <span class="hl-string">http://localhost:8900/health</span>
 
 <span class="hl-comment"># Submit a training job</span>
-<span class="hl-curl">curl</span> -X <span class="hl-method">POST</span> <span class="hl-string">https://api.roma.dev/v1/submit</span> \
+<span class="hl-curl">curl</span> -X <span class="hl-method">POST</span> <span class="hl-string">http://localhost:8900/submit</span> \
   -H <span class="hl-string">"X-API-Key: $ROMA_KEY"</span> \
   -H <span class="hl-string">"Content-Type: application/json"</span> \
   -d <span class="hl-string">'{"image":"pytorch/pytorch:2.1.0","command":"python train.py","gpu_type":"A100","gpu_count":1}'</span></code></pre></div>
@@ -278,7 +282,7 @@ table td:first-child{font-family:var(--font-mono);font-size:0.82rem;color:var(--
 <h3>Python</h3>
 <div class="code-block"><div class="code-header"><span class="code-lang">python</span><button class="code-copy">Copy</button></div><pre><code><span class="hl-key">import</span> requests
 
-API = <span class="hl-string">"https://api.roma.dev/v1"</span>
+API = <span class="hl-string">"http://localhost:8900"</span>
 HEADERS = {<span class="hl-string">"X-API-Key"</span>: <span class="hl-string">"your-key"</span>}
 
 <span class="hl-comment"># Submit a job</span>
@@ -298,7 +302,7 @@ job_id = resp.json()[<span class="hl-string">"job_id"</span>]
         <span class="hl-key">break</span></code></pre></div>
 
 <h3>Node.js</h3>
-<div class="code-block"><div class="code-header"><span class="code-lang">javascript</span><button class="code-copy">Copy</button></div><pre><code><span class="hl-key">const</span> API = <span class="hl-string">'https://api.roma.dev/v1'</span>;
+<div class="code-block"><div class="code-header"><span class="code-lang">javascript</span><button class="code-copy">Copy</button></div><pre><code><span class="hl-key">const</span> API = <span class="hl-string">'http://localhost:8900'</span>;
 <span class="hl-key">const</span> headers = { <span class="hl-string">'X-API-Key'</span>: process.env.ROMA_KEY, <span class="hl-string">'Content-Type'</span>: <span class="hl-string">'application/json'</span> };
 
 <span class="hl-key">const</span> { job_id } = <span class="hl-key">await</span> fetch(<span class="hl-string">`${API}/submit`</span>, {
@@ -336,7 +340,7 @@ console.log(<span class="hl-string">`Job submitted: ${job_id}`</span>);</code></
   </main>
 </div>
 
-<footer class="footer"><div class="container">ROMA Execution Bridge · DecisionOS v2.0 · Enterprise GPU Infrastructure</div></footer>
+<footer class="footer"><div class="container">ROMA Execution Bridge · v2.1.0 · self-hosted GPU Infrastructure</div></footer>
 
 <div class="modal-overlay" id="apiKeyModal">
   <div class="modal">

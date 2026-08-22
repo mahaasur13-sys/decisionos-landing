@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DecisionOS v2.0 — ROMA Execution Bridge</title>
+<title>ROMA Execution Bridge v2.1.0 — DecisionOS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -207,7 +207,7 @@ body { font-family: var(--font-body); background: var(--bg); color: var(--text);
 
 <header class="header">
   <div class="container header-inner">
-    <div class="logo">ROMA<span class="logo-badge">DecisionOS v2.0</span></div>
+    <div class="logo">ROMA<span class="logo-badge">v2.1.0</span></div>
     <nav class="nav">
       <a href="/features.html">Features</a>
       <a href="/pricing.html">Pricing</a>
@@ -225,7 +225,7 @@ body { font-family: var(--font-body); background: var(--bg); color: var(--text);
 <main>
   <section class="hero">
     <div class="container">
-      <div class="hero-badge">◈ ROMA Execution Bridge · Production</div>
+      <div class="hero-badge">◈ ROMA Execution Bridge · self-hosted · local GPU</div>
       <h1>Ship AI workloads<br>at GPU speed.</h1>
       <p>Enterprise multi-tenant execution platform for dispatching, monitoring and billing GPU & CPU workloads through one reliable API. DecisionOS layer included.</p>
       <div class="hero-cta">
@@ -239,10 +239,10 @@ body { font-family: var(--font-body); background: var(--bg); color: var(--text);
 
   <section class="container">
     <div class="stats" id="statsSection">
-      <div class="stat-card"><div class="stat-value" data-target="32">0</div><div class="stat-label">Tests Passing</div></div>
-      <div class="stat-card"><div class="stat-value" data-target="15">0</div><div class="stat-label">Policy Actions</div></div>
-      <div class="stat-card"><div class="stat-value" data-target="17">0</div><div class="stat-label">API Endpoints</div></div>
-      <div class="stat-card"><div class="stat-value" data-target="8000">0</div><div class="stat-label">Lines of Code</div></div>
+      <div class="stat-card"><div class="stat-value" data-target="110">0</div><div class="stat-label">Tests (repo)</div></div>
+      <div class="stat-card"><div class="stat-value" data-target="122">0</div><div class="stat-label">Commits</div></div>
+      <div class="stat-card"><div class="stat-value" data-target="75">0</div><div class="stat-label">API Endpoints</div></div>
+      <div class="stat-card"><div class="stat-value" data-target="30900">0</div><div class="stat-label">Lines of Code</div></div>
     </div>
   </section>
 
@@ -314,7 +314,7 @@ body { font-family: var(--font-body); background: var(--bg); color: var(--text);
 </main>
 
 <footer class="footer">
-  <div class="container">ROMA Execution Bridge · DecisionOS v2.0 · Enterprise GPU Infrastructure<a href="/donate.html" class="coffee-footer-link"><svg viewBox="0 0 120 110" width="16" height="15"><use href="#coffee-cup-svg"/></svg>Buy me a coffee</a></div>
+  <div class="container">ROMA Execution Bridge · v2.1.0 · self-hosted GPU Infrastructure<a href="/donate.html" class="coffee-footer-link"><svg viewBox="0 0 120 110" width="16" height="15"><use href="#coffee-cup-svg"/></svg>Buy me a coffee</a></div>
 </footer>
 
 <!-- API KEY MODAL -->
@@ -515,7 +515,7 @@ const API_KEY_STORAGE='roma_api_key';const gK=()=>localStorage.getItem(API_KEY_S
     try{ const r=localStorage.getItem(HK); if(!r) return; JSON.parse(r).forEach(m=>addMsg(m.role,m.text,false)) }catch(e){}
   }
   loadHistory();
-  if(me.children.length===0) addSys('ROMA AI Assistant + DeepSeek V4 PRO online. Crypto payments ready.');
+  if(me.children.length===0) addSys('ROMA AI Assistant + online (deepseek-chat).');
 
   // Fast local crypto commands
   function detectCryptoCmd(t){
