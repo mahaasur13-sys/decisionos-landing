@@ -242,10 +242,10 @@ body { font-family: var(--font-body); background: var(--bg); color: var(--text);
 
   <section class="container">
     <div class="stats" id="statsSection">
-      <div class="stat-card"><div class="stat-value" data-target="110">0</div><div class="stat-label">Tests (repo)</div></div>
-      <div class="stat-card"><div class="stat-value" data-target="122">0</div><div class="stat-label">Commits</div></div>
-      <div class="stat-card"><div class="stat-value" data-target="75">0</div><div class="stat-label">API Endpoints</div></div>
-      <div class="stat-card"><div class="stat-value" data-target="30900">0</div><div class="stat-label">Lines of Code</div></div>
+      <div class="stat-card"><div class="stat-value" data-target="441">0</div><div class="stat-label">Tests (repo)</div></div>
+      <div class="stat-card"><div class="stat-value" data-target="404">0</div><div class="stat-label">Commits</div></div>
+      <div class="stat-card"><div class="stat-value" data-target="85">0</div><div class="stat-label">API Endpoints</div></div>
+      <div class="stat-card"><div class="stat-value" data-target="40086">0</div><div class="stat-label">Lines of Code</div></div>
     </div>
   </section>
 
@@ -384,7 +384,7 @@ const API_KEY_STORAGE='roma_api_key';const gK=()=>localStorage.getItem(API_KEY_S
 (function(){const m=document.getElementById('apiKeyModal'),inp=document.getElementById('apiKeyInput'),tv=document.getElementById('toggleVisibility'),sk=document.getElementById('saveKeyBtn'),dk=document.getElementById('deleteKeyBtn');function oM(){inp.value=gK();inp.type='password';tv.textContent='👁';m.classList.add('open');setTimeout(()=>inp.focus(),100)}function cM(){m.classList.remove('open')}document.getElementById('apiKeyBtn').addEventListener('click',oM);document.getElementById('chatApiKeyBtn').addEventListener('click',oM);document.getElementById('modalClose').addEventListener('click',cM);document.getElementById('cancelKeyBtn').addEventListener('click',cM);m.addEventListener('click',e=>{if(e.target===m)cM()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.getElementById('cryptoModal').classList.contains('open')&&!document.getElementById('moneroModal').classList.contains('open'))cM()});tv.addEventListener('click',()=>{const p=inp.type==='password';inp.type=p?'text':'password';tv.textContent=p?'🙈':'👁'});sk.addEventListener('click',()=>{const v=inp.value.trim();v?localStorage.setItem(API_KEY_STORAGE,v):localStorage.removeItem(API_KEY_STORAGE);uS();showToast(v?'✅ API Key успешно сохранён':'🗑 API Key удалён');cM()});dk.addEventListener('click',()=>{localStorage.removeItem(API_KEY_STORAGE);inp.value='';uS();showToast('🗑 API Key удалён');cM()});uS()})();
 
 /* ========== ANIMATED COUNTERS ========== */
-(function(){const s=document.getElementById('statsSection'),vs=s.querySelectorAll('.stat-value');let a=!1;function ec(t){return 1-Math.pow(1-t,3)}function ac(){if(a)return;a=!0;vs.forEach(el=>{const t=parseInt(el.dataset.target,10),d=1800,st=performance.now();function tick(now){const p=Math.min((now-st)/d,1),e=ec(p),c=Math.floor(t*e);el.textContent=c>=1000?c.toLocaleString('en-US'):c;if(p<1)requestAnimationFrame(tick);else el.textContent=t>=1000?t.toLocaleString('en-US'):t}requestAnimationFrame(tick)})}new IntersectionObserver(e=>{if(e[0].isIntersecting)ac()},{threshold:0.4}).observe(s)})();
+(function(){const s=document.getElementById('statsSection'),vs=s.querySelectorAll('.stat-value');let a=!1;function ec(t){return 1-Math.pow(1-t,3)}function ac(){if(a)return;a=!0;vs.forEach(el=>{const t=parseInt(el.dataset.target,10),d=1800,st=performance.now();function tick(now){const p=Math.max(0,Math.min((now-st)/d,1)),e=ec(p),c=Math.floor(t*e);el.textContent=c>=1000?c.toLocaleString('en-US'):c;if(p<1)requestAnimationFrame(tick);else el.textContent=t>=1000?t.toLocaleString('en-US'):t}requestAnimationFrame(tick)})}new IntersectionObserver(e=>{if(e[0].isIntersecting)ac()},{threshold:0.4}).observe(s)})();
 
 /* ========== CRYPTO MODAL ========== */
 (function(){

@@ -137,7 +137,7 @@ window.ROMA = window.ROMA || {};
         const duration = 1800;
         const start = performance.now();
         function tick(now) {
-          const eased = easeOutCubic(Math.min((now - start) / duration, 1));
+          const eased = easeOutCubic(Math.max(0, Math.min((now - start) / duration, 1)));
           const val = Math.floor(target * eased);
           el.textContent = val >= 1000 ? val.toLocaleString('en-US') : val;
           if ((now - start) < duration) requestAnimationFrame(tick);
